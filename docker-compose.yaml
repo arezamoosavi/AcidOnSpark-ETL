@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  airflow:
+    build: ./airflow
+    restart: unless-stopped
+    environment:
+      - AIRFLOW__CORE__FERNET_KEY=PeszOD9t6wKNdNONTGh-k4qsYbsGHQ8CSqTQZlqPCDk=
+      - AIRFLOW_HOME=/opt/airflow
+    ports:
+      - 8000:8000
+    command: sh run.sh
+
+  spark-master:
+    build: ./spark
+    restart: unless-stopped
+    ports:
+      - 4040:4040
+      - 7077:7077
+      - 8080:8080
+      - 18080:18080
+    command: sh spark-master.sh
+
+  spark-worker1:
+    build: ./spark
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    command: sh spark-worker.sh
+
+  spark-worker2:
+    build: ./spark
+    restart: unless-stopped
+    ports:
+      - 8082:8081
+    command: sh spark-worker.sh
