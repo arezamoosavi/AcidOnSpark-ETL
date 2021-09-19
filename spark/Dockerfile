@@ -32,4 +32,4 @@ COPY spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
-ADD spark-master spark-worker /
+ADD spark-master.sh spark-worker.sh /

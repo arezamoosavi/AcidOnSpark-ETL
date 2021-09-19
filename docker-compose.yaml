@@ -9,7 +9,7 @@ services:
       - AIRFLOW_HOME=/opt/airflow
     ports:
       - 8000:8000
-    command: sh run.sh
+    # command: sh run.sh
 
   spark-master:
     build: ./spark
@@ -21,16 +21,9 @@ services:
       - 18080:18080
     command: sh spark-master.sh
 
-  spark-worker1:
+  spark-worker:
     build: ./spark
     restart: unless-stopped
     ports:
-      - 8081:8081
-    command: sh spark-worker.sh
-
-  spark-worker2:
-    build: ./spark
-    restart: unless-stopped
-    ports:
-      - 8082:8081
+      - "8081-8085:8081"
     command: sh spark-worker.sh

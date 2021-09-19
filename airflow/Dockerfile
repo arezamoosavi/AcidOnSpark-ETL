@@ -31,12 +31,12 @@ ENV PYTHONPATH=$SPARK_HOME/python3:$SPARK_HOME/python3/lib/py4j-0.10.7-src.zip:$
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# RUN mkdir -p /opt/airflow/dags
 
 COPY ./dags ./opt/airflow/dags
 RUN chmod -R a+rwx /opt/airflow
 COPY airflow.cfg /opt/airflow/airflow.cfg
-COPY run.sh run.sh
-RUN chmod a+rwx /run.sh
-
+COPY run.sh ./run.sh
+RUN chmod +x /run.sh
+ENTRYPOINT /run.sh
+EXPOSE 8000
 WORKDIR /opt/airflow
