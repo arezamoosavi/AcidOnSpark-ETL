@@ -9,7 +9,9 @@ services:
       - AIRFLOW_HOME=/opt/airflow
     ports:
       - 8000:8000
-    # command: sh run.sh
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+    command: sleep infinity
 
   spark-master:
     build: ./spark
@@ -31,13 +33,13 @@ services:
   minio:
     image: "minio/minio:latest"
     volumes:
-      - ./.storage:/data
+      - ./.storage/minio:/data
     ports:
       - 9000:9000
       - 9001:9001
     environment:
-      MINIO_ACCESS_KEY: "minio"
-      MINIO_SECRET_KEY: "minio12345"
+      MINIO_ACCESS_KEY: "root"
+      MINIO_SECRET_KEY: "root12345"
     command: server /data --console-address ":9001"
 
     healthcheck:
