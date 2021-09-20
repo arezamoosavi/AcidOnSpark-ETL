@@ -1,4 +1,7 @@
-.PHONY: airflow spark-master spark-worker scale-spark down
+.PHONY: airflow spark-master spark-worker scale-spark minio down
+
+minio:
+	docker-compose up -d minio
 
 airflow:
 	docker-compose up -d airflow

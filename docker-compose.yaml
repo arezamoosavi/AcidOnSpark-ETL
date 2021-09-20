@@ -27,3 +27,21 @@ services:
     ports:
       - "8081-8085:8081"
     command: sh spark-worker.sh
+
+  minio:
+    image: "minio/minio:latest"
+    volumes:
+      - ./.storage:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ACCESS_KEY: "minio"
+      MINIO_SECRET_KEY: "minio12345"
+    command: server /data --console-address ":9001"
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
