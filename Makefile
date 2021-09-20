@@ -23,6 +23,7 @@ run-spark:
 	spark-submit --master spark://spark-master:7077 \
 	--deploy-mode client --driver-memory 2g \
 	--num-executors 2 \
+	--packages io.delta:delta-core_2.12:1.0.0 \
 	--jars dags/jars/aws-java-sdk-1.11.534.jar,\
 	dags/jars/aws-java-sdk-bundle-1.11.874.jar,\
 	dags/jars/delta-core_2.12-1.0.0.jar,\

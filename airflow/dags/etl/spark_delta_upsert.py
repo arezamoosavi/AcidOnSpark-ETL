@@ -6,6 +6,9 @@ from pyspark import StorageLevel
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 
+# from delta import DeltaTable
+from delta.tables import DeltaTable
+
 
 def get_spark_session(appname, minio_url,
                       minio_access_key, minio_secret_key):
@@ -65,9 +68,15 @@ sdf = sdf.withColumn(
 )
 
 sdf.printSchema()
-logger.info(f"the count is {sdf.count()}")
 
-sdf.write.format("delta").mode("overwrite").option("mergeSchema", "true").partitionBy(
-    "party_ts").save('s3a://raw-data/delta/party')
+delta_table = DeltaTable.forPath(spark, 's3a://raw-data/delta/party')
+
+delta_table.alias("t1").merge(
+    sdf.alias("t2"),
+    "t1.Time = t2.Time").whenNotMatchedInsertAll().execute()
+
+
+spark.read.format("delta").load(
+    "s3a://raw-data/delta/party").repartition(1).show()
 
 spark.stop()
