@@ -17,7 +17,6 @@ scale-spark:
 down:
 	docker-compose down -v
 
-
 run-spark:
 	docker-compose exec airflow \
 	spark-submit --master spark://spark-master:7077 \
@@ -29,3 +28,7 @@ run-spark:
 	dags/jars/delta-core_2.12-1.0.0.jar,\
 	dags/jars/hadoop-aws-3.2.0.jar \
 	dags/etl/spark_app.py
+
+hive-ql:
+	docker-compose exec hive \
+	hive -hiveconf hive.root.logger=DEBUG,console

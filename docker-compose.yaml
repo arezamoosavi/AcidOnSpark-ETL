@@ -41,9 +41,24 @@ services:
       MINIO_ACCESS_KEY: "root"
       MINIO_SECRET_KEY: "root12345"
     command: server /data --console-address ":9001"
-
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
       interval: 30s
       timeout: 20s
       retries: 3
+
+  mariadb:
+    image: mariadb:latest
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: metastore_db
+
+  hive:
+    build: ./hive
+    restart: unless-stopped
+    ports:
+      - 9083:9083

@@ -51,9 +51,10 @@ logger.setLevel(log4jLogger.Level.INFO)
 # sdf = sdf.persist(StorageLevel.DISK_ONLY)
 # sdf.unpersist()
 
+req_field = ["Time", "bitbay", "bitfinex", "bitstamp"]
 sdf = extract(spark, "raw-data", "bitcoinity_data.csv")
+sdf = sdf.select(*[req_field])
 sdf = sdf.withColumn("Time", sdf["Time"].cast("timestamp").alias("Time"))
-
 sdf = sdf.withColumn(
     "party_ts",
     F.concat_ws(
@@ -64,10 +65,10 @@ sdf = sdf.withColumn(
     ),
 )
 
+sdf = sdf.select([F.col(x).alias(x.lower()) for x in sdf.columns])
 sdf.printSchema()
-logger.info(f"the count is {sdf.count()}")
 
 sdf.write.format("delta").mode("overwrite").option("mergeSchema", "true").partitionBy(
-    "party_ts").save('s3a://raw-data/delta/party')
+    "party_ts").save('s3a://raw-data/delta/bitcoin_data/')
 
 spark.stop()
