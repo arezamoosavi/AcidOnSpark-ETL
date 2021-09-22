@@ -1,4 +1,7 @@
-.PHONY: airflow spark hive scale-spark minio down
+.PHONY: airflow spark hive scale-spark minio superset down
+
+down:
+	docker-compose down -v
 
 minio:
 	docker-compose up -d minio
@@ -16,11 +19,17 @@ hive:
 	sleep 2
 	docker-compose up -d hive
 
+presto-cluster:
+	docker-compose up -d presto presto-worker
+
+superset:
+	docker-compose up -d superset
 scale-spark:
 	docker-compose scale spark-worker=3
 
-down:
-	docker-compose down -v
+presto-cli:
+	docker-compose exec presto \
+	presto --server localhost:8888 --catalog hive --schema default
 
 run-spark:
 	docker-compose exec airflow \

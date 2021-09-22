@@ -61,20 +61,22 @@ logger.setLevel(log4jLogger.Level.INFO)
 # bit_df.printSchema()
 # bit_df.show()
 
-# delta_table = DeltaTable.forPath(spark, 's3a://raw-data/delta/party')
+# delta_table = DeltaTable.forPath(spark, "s3a://raw-data/delta/bitcoin_data/")
 # delta_table.generate("symlink_format_manifest")
 
-# sql_delta_table = """CREATE EXTERNAL TABLE bitcoin1
-# (Time timestamp, bitbay double, bitfinex double, bitstamp double,
-# btcmarkets double, cexio double, coinbase double, gemini double, korbit double,
-# kraken double, others double)
-# PARTITIONED BY (party_ts string)
-# ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
-# STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.SymlinkTextInputFormat'
-# OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
-# LOCATION 's3a://raw-data/delta/party/_symlink_format_manifest/'"""
+sql_delta_table = """CREATE EXTERNAL TABLE IF NOT EXISTS bitcoinss (time timestamp, 
+bitbay double, bitfinex double, bitstamp double, party_ts string)
+PARTITIONED BY (party_ts)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.SymlinkTextInputFormat'
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION 's3a://raw-data/delta/bitcoin_data/_symlink_format_manifest/'"""
+spark.sql(sql_delta_table)
+spark.sql("MSCK REPAIR TABLE bitcoinss")
+spark.sql("ALTER TABLE bitcoinss SET TBLPROPERTIES(delta.compatibility.symlinkFormatManifest.enabled=true)")
 
-# spark.sql(sql_delta_table)
+sdf = spark.sql("select * from bitcoinss")
+sdf.printSchema()
 
 # bit_df = spark.read.format("delta").load("s3a://raw-data/delta/bitcoin_data/")
 # bit_df.printSchema()
@@ -90,9 +92,9 @@ logger.setLevel(log4jLogger.Level.INFO)
 # spark.sql(sql_query)
 # spark.table("delta_bitcoin").printSchema()
 
-sdf = spark.sql("select * from delta_bitcoin")
-sdf.printSchema()
-sdf.show()
+# sdf = spark.sql("select * from delta_bitcoin")
+# sdf.printSchema()
+# sdf.show()
 
 
 spark.stop()

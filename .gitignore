@@ -132,3 +132,5 @@ dmypy.json
 .storage/minio
 *.jar
 *.csv
+*.db
+superset/.setup-complete

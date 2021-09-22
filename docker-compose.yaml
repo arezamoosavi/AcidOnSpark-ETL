@@ -62,3 +62,29 @@ services:
     restart: unless-stopped
     ports:
       - 9083:9083
+
+  presto:
+    build: ./presto
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./presto/coordinator_config.properties:/opt/presto/etc/config.properties
+      - ./presto/etc/catalog:/opt/presto/etc/catalog
+
+  presto-worker:
+    build: ./presto
+    volumes:
+      - ./presto/worker_config.properties:/opt/presto/etc/config.properties
+      - ./presto/etc/catalog:/opt/presto/etc/catalog
+
+  superset:
+    image: arezamoosavi/superset:latest
+    container_name: superset
+    environment:
+      ADMIN_USERNAME: admin
+      ADMIN_PWD: admin
+    ports:
+      - 8088:8088
+    volumes:
+      - ./superset:/superset
+    restart: unless-stopped
