@@ -1,4 +1,4 @@
-.PHONY: airflow spark scale-spark minio down
+.PHONY: airflow spark hive scale-spark minio down
 
 minio:
 	docker-compose up -d minio
@@ -10,6 +10,11 @@ spark:
 	docker-compose up -d spark-master
 	sleep 2
 	docker-compose up -d spark-worker
+
+hive:
+	docker-compose up -d mariadb
+	sleep 2
+	docker-compose up -d hive
 
 scale-spark:
 	docker-compose scale spark-worker=3
@@ -28,7 +33,3 @@ run-spark:
 	dags/jars/delta-core_2.12-1.0.0.jar,\
 	dags/jars/hadoop-aws-3.2.0.jar \
 	dags/etl/spark_app.py
-
-hive-ql:
-	docker-compose exec hive \
-	hive -hiveconf hive.root.logger=DEBUG,console
