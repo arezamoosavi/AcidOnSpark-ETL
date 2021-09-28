@@ -1,0 +1,7 @@
+These files should be downloaded into this directory:
+
+aws-java-sdk-1.11.534.jar
+aws-java-sdk-bundle-1.11.874.jar
+delta-core_2.12-1.0.0.jar
+hadoop-aws-3.2.0.jar
+mariadb-java-client-2.7.4.jar

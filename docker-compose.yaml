@@ -49,10 +49,12 @@ services:
 
   mariadb:
     image: mariadb:latest
+    # image: mariadb/columnstore:latest
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: admin
+      USE_S3_STORAGE: 0
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
       MYSQL_DATABASE: metastore_db
