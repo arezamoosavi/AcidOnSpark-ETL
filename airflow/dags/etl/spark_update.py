@@ -32,13 +32,6 @@ def insert_data(input_path="s3a://datalake/bitcoin_newdata.csv",
 
     delta_table = DeltaTable.forPath(spark, output_path)
 
-    # (delta_table.alias("t1").merge(
-    #     sdf.alias("t2"),
-    #     "t1.timestamp = t2.timestamp")
-    #     .whenMatched().updateAll()
-    #     .whenNotMatched().insertAll()
-    #     .execute())
-
     (delta_table.alias("t1").merge(
         sdf.alias("t2"),
         "t1.timestamp = t2.timestamp").whenMatchedUpdateAll()
@@ -53,7 +46,14 @@ def insert_data(input_path="s3a://datalake/bitcoin_newdata.csv",
 
 if __name__ == "__main__":
 
-    input_path = str(sys.argv[1])
-    output_path = str(sys.argv[2])
+    if len(sys.argv) == 1:
+        input_path = "s3a://datalake/bitcoin_update.csv"
+        output_path = "s3a://datalake/deltatables/bitcoin/"
+    elif len(sys.argv) == 2:
+        input_path = str(sys.argv[1])
+        output_path = "s3a://datalake/deltatables/bitcoin/"
+    else:
+        input_path = str(sys.argv[1])
+        output_path = str(sys.argv[2])
 
     insert_data(input_path, output_path)

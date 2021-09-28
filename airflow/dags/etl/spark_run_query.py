@@ -13,13 +13,13 @@ log4jLogger = spark._jvm.org.apache.log4j
 logger = log4jLogger.LogManager.getLogger("LOGGER")
 logger.setLevel(log4jLogger.Level.INFO)
 
-spark.sql("""SELECT * FROM delta_bitcoin WHERE timestamp = 1617148680""").show()
+spark.sql("""SELECT * FROM delta_bitcoin WHERE timestamp = 1429195440""").show()
 # update
 spark.sql(
-    """UPDATE delta_bitcoin SET low = 53770.38 WHERE timestamp = 1617148680""").show()
-spark.sql("""SELECT * FROM delta_bitcoin WHERE timestamp = 1617148680""").show()
+    """UPDATE delta_bitcoin SET low = 226.42 WHERE timestamp = 1429195440""").show()
+spark.sql("""SELECT * FROM delta_bitcoin WHERE timestamp = 1429195440""").show()
 # delete
-spark.sql("DELETE FROM delta.`s3a://datalake/deltatables/bitcoin/` WHERE timestamp = 1617148680").show()
-# spark.sql("DELETE FROM delta_bitcoin WHERE timestamp = 1617148680").show()
-spark.sql("""SELECT * FROM delta_bitcoin WHERE timestamp = 1617148680""").show()
+# spark.sql("DELETE FROM delta.`s3a://datalake/deltatables/bitcoin/` WHERE timestamp = 1429197120").show()
+# spark.sql("DELETE FROM delta_bitcoin WHERE timestamp = 1429197120").show()
+# spark.sql("""SELECT * FROM delta_bitcoin WHERE timestamp = 1429197120""").show()
 spark.stop()

@@ -14,6 +14,7 @@ log4jLogger = spark._jvm.org.apache.log4j
 logger = log4jLogger.LogManager.getLogger("LOGGER")
 logger.setLevel(log4jLogger.Level.INFO)
 
+
 def create_initial_load(input_path="s3a://datalake/bitcoin_initial.csv",
                         output_path="s3a://datalake/deltatables/bitcoin/", **kwargs):
 
@@ -40,7 +41,14 @@ def create_initial_load(input_path="s3a://datalake/bitcoin_initial.csv",
 
 if __name__ == "__main__":
 
-    input_path = str(sys.argv[1])
-    output_path = str(sys.argv[2])
+    if len(sys.argv) == 1:
+        input_path = "s3a://datalake/bitcoin_initial.csv"
+        output_path = "s3a://datalake/deltatables/bitcoin/"
+    elif len(sys.argv) == 2:
+        input_path = str(sys.argv[1])
+        output_path = "s3a://datalake/deltatables/bitcoin/"
+    else:
+        input_path = str(sys.argv[1])
+        output_path = str(sys.argv[2])
 
     create_initial_load(input_path, output_path)
