@@ -37,12 +37,6 @@ to-minio:
 
 exec-mariadb:
 	docker-compose exec mariadb mysql -u root -p -h localhost
-	# CREATE DATABASE dwh;
-	# USE dwh;
-	# CREATE TABLE IF NOT EXISTS main_events (id VARCHAR(255) NOT NULL, 
-	# device_id VARCHAR(255), event_code VARCHAR(255), event_detail VARCHAR(255), 
-	# created TIMESTAMP, group_id VARCHAR(255), description VARCHAR(255), 
-	# event_type VARCHAR(255), ds VARCHAR(255)) ENGINE=COLUMNSTORE;
 
 run-spark:
 	docker-compose exec airflow \
