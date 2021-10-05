@@ -1,6 +1,6 @@
 # AcidOnSpark-ETL
 Watch about it here:
-## [youtube](https://www.youtube.com/watch?v=Bc53-Khi9FM)
+## [youtube](https://www.youtube.com/watch?v=C4UiqIc_gWA)
 Read about it here:
 ## [medium](https://sdamoosavi.medium.com/doing-acid-on-spark-6ef54f3d1a8d)
 
