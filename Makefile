@@ -1,7 +1,26 @@
 .PHONY: airflow spark hive scale-spark minio superset down
 
+pull:
+	docker-compose pull
+
+up:
+	docker-compose up -d
+
+logs:
+	docker-compose logs -f
+
+ps:
+	docker-compose ps
+
 down:
 	docker-compose down -v
+
+jars_dl:
+	sh jarfile_download.sh
+
+clear-images:
+	docker image prune --filter="dangling=true"
+
 
 minio:
 	docker-compose up -d minio
