@@ -60,3 +60,6 @@ make presto-cli
 In presto-cli just like spark sql, any query can be run.
 ### Superset
 Superset is opensource, supports any databases with many dashbord styles also famous in tech in order to create dashboards or to get hands on databases.
+```bash
+make superset
+```
